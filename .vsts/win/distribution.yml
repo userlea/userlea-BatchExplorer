@@ -1,0 +1,45 @@
+steps:
+  - template: ./win-dependencies.yml
+
+  - powershell: ./desktop/scripts/azpipelines/update-build-name.ps1
+    displayName: Resolve version
+
+  - powershell: |
+      . .vsts/win/exec.ps1
+      $ErrorActionPreference = "Stop"
+      exec { yarn build:prod }
+    displayName: Build all packages
+
+  - powershell: |
+      . .vsts/win/exec.ps1
+      $ErrorActionPreference = "Stop"
+      exec { yarn build-python }
+      exec { yarn package win-exe }
+    workingDirectory: desktop
+    displayName: Build executable
+
+  - template: ./sign.yml
+    parameters:
+      name: "Sign executable and dll"
+      pattern: |
+        **/*.exe
+        **/*.dll
+        !**/python36.dll
+
+  - powershell: yarn package win-installer
+    workingDirectory: desktop
+    displayName: Build installer
+
+  - template: ./sign.yml
+    parameters:
+      name: "Sign installer"
+      pattern: |
+        **/BatchExplorer*Setup*.exe
+
+  - powershell: yarn package win-manifest
+    workingDirectory: desktop
+    displayName: Create manifest
+
+  - template: ../common/publish-artifacts.yml
+    parameters:
+      folder: windows

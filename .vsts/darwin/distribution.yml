@@ -1,0 +1,37 @@
+steps:
+  - template: ./darwin-dependencies.yml
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      yarn build:prod
+      yarn build-python
+      yarn package darwin-app
+      cd ./desktop/release/mac
+      zip -y -r ../BatchExplorer-mac.zip ./BatchExplorer.app
+      cd ../..
+      rm -rf ./desktop/release/mac/*.app
+      mkdir ./desktop/release/keep
+      cp ./desktop/release/*.zip ./desktop/release/keep/before-code-sign.zip
+    displayName: Build .app
+
+  - template: ./sign.yml
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      unzip ./release/BatchExplorer*.zip -d ./release/mac
+      ls ./release/mac
+      rm -f ./release/mac/*.pkg
+      # rm -rf ./release/*.zip
+      mv ./release/*.zip ./release/code-sign-results.zip
+      yarn package darwin-dmg
+      rm -rf ./release/mac/*
+    workingDirectory: desktop
+    displayName: Build dmg
+
+  - script: yarn package darwin-manifest
+    workingDirectory: desktop
+    displayName: Create manifest
+
+  - template: ../common/publish-artifacts.yml
+    parameters:
+      folder: darwin

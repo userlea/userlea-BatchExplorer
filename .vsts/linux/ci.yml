@@ -1,0 +1,12 @@
+steps:
+  - template: ./linux-dependencies.yml
+
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      yarn build:package
+    displayName: Build and pack
+
+  - template: ../common/publish-artifacts.yml
+    parameters:
+      folder: linux

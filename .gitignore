@@ -1,0 +1,7 @@
+/**/node_modules/
+/**/lib
+/**/lib-cjs
+/**/lib-umd
+/**/build
+/desktop/release/
+coverage/
