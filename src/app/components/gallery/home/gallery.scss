@@ -1,0 +1,91 @@
+@import "app/styles/variables";
+
+bl-gallery {
+    position: relative;
+    width: 100%;
+    height: $contentview-height;
+    $header-height: 40px;
+
+    .header {
+        display: flex;
+        height: $header-height;
+        padding: 10px;
+        h1 {
+            margin-right: 5px;
+        }
+
+        bl-local-template-pick-button {
+
+        }
+    }
+
+    .gallery-content {
+        display: flex;
+    }
+
+    .gallery-applications {
+        flex: 0 0 50%;
+        height: calc(#{$contentview-height} - #{$header-height});
+
+        .filter {
+            padding: 10px;
+            > input {
+                width: 100%;
+            }
+        }
+    }
+
+    // static colors for deprecation warnings
+    .gallery-deprecation-warning {
+        > .warning {
+            background-color: var(--color-warn-50);
+            // using the color from var(--color-text-primary)
+            color: #333333;
+
+            > .summary-container {
+
+                &.standard {
+                    height: unset;
+                }
+
+                > .message {
+                    white-space: normal;
+                }
+            }
+        }
+    }
+
+    .gallery-warning-alternative-link {
+        // using the color from var(--color-primary-800);
+        color: #1d54af;
+    }
+
+    .gallery-application-recent {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            color: $primary-text;
+        }
+    }
+
+    .gallery-application-actions {
+        margin: 0 10px;
+        .actions-header {
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+
+            h2 {
+                margin-right: 20px;
+                flex: 1;
+            }
+
+            bl-clickable {
+                margin: 5px;
+            }
+        }
+    }
+
+}

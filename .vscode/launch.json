@@ -1,0 +1,100 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug: Main",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/src/client/main.ts",
+      "stopOnEntry": false,
+      "args": [
+        "--remote-debugging-port=9222",
+        "--nolazy"
+      ],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build-client",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "env": {
+        "NODE_ENV": "development",
+        "HOT": "1"
+      },
+      "console": "internalConsole",
+      "outputCapture": "std",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ],
+      "presentation": {
+          "hidden": false,
+          "group": "Debug",
+          "order": 20
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ]
+    },
+    {
+      "name": "Attach: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "sourceMaps": true,
+      "trace": "verbose",
+      "webRoot": "${workspaceRoot}/build",
+      "timeout": 30000,
+      "presentation": {
+        "hidden": false,
+        "group": "Debug",
+        "order": 30
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ]
+    },
+    {
+      "name": "Test: Client",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/test/client/run-jasmine.js",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "presentation": {
+        "hidden": false,
+        "group": "Test",
+        "order": 10
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+        "${workspaceFolder}/test/client/**"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+        "name": "Debug: All",
+        "configurations": [
+            "Debug: Main",
+            "Attach: Renderer"
+        ],
+        "presentation": {
+            "hidden": false,
+            "group": "Debug",
+            "order": 10
+        }
+    }
+  ]
+}
