@@ -1,0 +1,33 @@
+name: $(SourceBranch)$(Rev:.r)
+jobs:
+  - job: Linux
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+       - template: ./linux/ci.yml
+
+  - job: MacOS
+    pool:
+      vmImage: macOS-10.15
+      demands: xcode
+    steps:
+       - template: ./darwin/ci.yml
+
+  - job: Windows
+    pool:
+      vmImage: windows-2019
+    steps:
+      - template: ./win/ci.yml
+
+  - job: RegisterDependencies
+    displayName: Register dependencies
+    pool:
+      vmImage: vs2017-win2016
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    variables:
+      EnableDetectorPip: true
+    continueOnError: true
+    steps:
+      - template: ./win/win-dependencies.yml
+      - task: ComponentGovernanceComponentDetection@0
+        displayName: 'Component Detection'
