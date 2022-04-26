@@ -1,0 +1,24 @@
+@import "app/styles/variables";
+
+bl-pool-details {
+    .estimated-cost {
+        margin: 5px;
+    }
+
+
+    .open-pool-graphs-new-window {
+        position: absolute;
+        right: 10px;
+        color: $link-color;
+        margin-left: 10px;
+        z-index: 100;
+    }
+
+    div[summaryTile] > bl-pool-state-graph {
+        padding: 5px;
+        border-bottom: 1px solid $border-color;
+    }
+    div[summaryTile] > bl-pool-cost-card {
+        padding: 5px;
+    }
+}
