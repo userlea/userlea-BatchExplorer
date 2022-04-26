@@ -1,0 +1,63 @@
+@import "app/styles/variables";
+
+bl-node-diagnostics {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .filters {
+        border-bottom: 1px solid $border-color;
+        padding: 3px 10px;
+        display: flex;
+        align-items: center;
+        height: 30px;
+        flex: 0 0 34px;
+
+        bl-select {
+            margin: 0 10px;
+        }
+
+        input {
+            flex: 1;
+        }
+    }
+
+    .timeline {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    .log-entry {
+        display: flex;
+        // overflow: hidden;
+        width: 100%;
+
+        .level {
+            font-weight: bold;
+            flex: 0 0 80px;
+            padding-left: 10px;
+        }
+
+        .message {
+            min-width: 0;
+            flex: 1 1 auto;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        &.error {
+            color: $danger-color;
+        }
+        &.warning {
+            color: $warn-color;
+        }
+        &.info {
+            color: $primary-color;
+        }
+        &.debug {
+            color: $secondary-text;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+<div class="filters" [formGroup]="filters">
+    Levels: <bl-select formControlName="levels" placeholder="Levels" [multiple]="true">
+        <bl-option *ngFor="let level of levels" [value]="level" [label]="level"></bl-option>
+    </bl-select>
+    <input blInput formControlName="search" placeholder="Search">
+</div>
+<div class="timeline">
+    <div *ngFor="let entry of logs;trackBy: trackItem" class="log-entry {{entry.level}}">
+        <span class="level">{{entry.level}}</span> <span class="message">{{entry.message}}</span>
+    </div>
+</div>
