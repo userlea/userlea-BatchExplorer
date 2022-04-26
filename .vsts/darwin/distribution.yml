@@ -1,0 +1,35 @@
+steps:
+  - template: ./darwin-dependencies.yml
+
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      npm run -s build:prod
+      npm run -s build-python
+      npm run -s package darwin-app
+      cd ./release/mac
+      zip -y -r ../BatchExplorer-mac.zip ./BatchExplorer.app
+      cd ../..
+      rm -rf ./release/mac/*.app
+    displayName: Build .app
+
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      unzip ./release/BatchExplorer*.zip -d ./release/mac
+      ls ./release/mac
+      rm -f ./release/mac/*.pkg
+      npm run -s package darwin-dmg
+      rm -rf ./release/mac/*
+    displayName: Build dmg
+
+  - template: ./sign.yml
+
+  - template: ./notarize.yml
+
+  - script: npm run package darwin-manifest
+    displayName: Create manifest
+
+  - template: ../common/publish-artifacts.yml
+    parameters:
+      folder: darwin
