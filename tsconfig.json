@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/common" },
+    { "path": "./packages/playground" },
+    { "path": "./packages/react" },
+    { "path": "./packages/service" },
+    { "path": "./web" }
+  ]
+}
