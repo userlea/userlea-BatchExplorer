@@ -1,0 +1,28 @@
+<div [formGroup]="form" class="editable-table">
+    <table class="noselect" cellspacing="0" cellpadding="0" formArrayName="items">
+        <thead>
+            <tr>
+                <th>Application</th>
+                <th>Package Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items.controls;trackBy: trackRow; let i=index; let isLast=last" [formGroupName]="i">
+                <td style="width: 50%">
+                    <bl-form-field>
+                        <bl-select formControlName="applicationId" (change)="applicationSelected($event, i)">
+                            <bl-option *ngFor="let application of applications;trackBy: trackApplication" [value]="application.id.toLowerCase()" [label]="application.id"></bl-option>
+                        </bl-select>
+                    </bl-form-field>
+                </td>
+                <td style="width: 50%">
+                    <bl-form-field>
+                        <bl-select formControlName="version">
+                            <bl-option *ngFor="let package of packageMap[i];trackBy: trackPackages" [value]="getPackageValue(package)"  [label]="package"></bl-option>
+                        </bl-select>
+                    </bl-form-field>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
