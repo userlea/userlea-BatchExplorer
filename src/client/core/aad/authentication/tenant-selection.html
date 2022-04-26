@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="./tenant-selection.css" rel="stylesheet" type="text/css">
+</head>
+<script>
+    const { ipcRenderer } = require("electron");
+    function submit() {
+        const tenantsEl = document.getElementById("tenants");
+        const chosenTenantIds = tenantsEl.value.split(",");
+        ipcRenderer.send('tenant-selection-submitted', chosenTenantIds);
+    }
+</script>
+
+<body>
+    <h1>Choose Azure Active Directory Tenants</h1>
+    <div class="form-element">
+        <label for="tenants">Username</label>
+        <input id="tenants">
+    </div>
+    <br>
+    <button onclick="submit()">Save</button>
+</body>
+
+</html>
