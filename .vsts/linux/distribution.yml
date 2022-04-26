@@ -1,0 +1,15 @@
+steps:
+  - template: ./linux-dependencies.yml
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      npm run build-and-pack
+    displayName: Build and pack
+  - script: |
+      set -e
+      . "$(Agent.WorkFolder)/.venv/batchexplorer/bin/activate"
+      npm run package linux-manifest
+    displayName: Create manifest
+  - template: ../common/publish-artifacts.yml
+    parameters:
+      folder: linux
